@@ -97,7 +97,6 @@ class Layer_Dense:
         self.output = np.dot(X, self.weights) + self.biases
 
     def __str__(self):
-
         return self.__class__.__name__ + '\n' +'Weights: '+'\n'+str(self.weights)+'\n'+'Biases: '+'\n'+str(self.biases)
 
 

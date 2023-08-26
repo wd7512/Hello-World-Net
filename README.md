@@ -6,4 +6,5 @@ Work in progress to build a clean, robust reinforcement learning algorithm.
 
 * move to this directory
 * run: python -m venv venv
+* run: .\venv\Scripts\activate.bat
 * run: pip install -r requirements.txt
