@@ -1,6 +1,10 @@
 import numpy as np
 
 class network():
+    '''
+    Inputs must always be a 2d array of a batch of input vectors
+    You can always use a singular input vector but must be contained in another array so it is 2d
+    '''
     def __init__(self,n_in,n_out):
         self.layers = [] #list to contain all layers
         self.n_in = n_in
@@ -8,7 +12,8 @@ class network():
         
     def add_layer(self,layer): #adds a layer
         self.layers.append(layer)
-        if not self.check_integrity():
+        temp = self.check_integrity()
+        if temp == False:
             print('Removing Added Layer')
             del self.layers[-1]
 
@@ -19,11 +24,9 @@ class network():
 
     def check_integrity(self): #check integrity of layers
         if self.layers == []:
-            print('What are you checking??')
             return True
         else:
-            n_inputs,_ = self.layers[0].weights.shape
-            X = np.random.randn(1,n_inputs)
+            X = np.random.randn(1,self.n_in)
             try:
                 self.forward(X)
                 
@@ -31,12 +34,10 @@ class network():
                 print('Network Failed Integrity Test')
                 print(e)
                 return False
-            #print('Network Passed Integrity Test')
             return True
             
     def forward(self,X):
-        if np.size(X) != self.n_in:
-            print(np.size(X),self.n_in)
+        if np.shape(X)[1] != self.n_in:
             raise Exception('Wrong input size')
         else:
             self.output = X
@@ -69,14 +70,13 @@ class layer_dense():
 
 class activation_function():
     def __init__(self,function):
-
         if callable(function):
             self.function = function
         else:
             raise Exception('Input is not a function')
     
     def forward(self,X):
-        self.output = self.function(X)
+        self.output = np.apply_along_axis(self.function, 1, X)
         return self.output
     
     def __str__(self):
@@ -91,13 +91,3 @@ class softmax(activation_function):
         self.function = lambda x : np.exp(x) / np.sum(np.exp(x))
 
 # remove everything below this later
-print('\n-------Starting----------\n')
-
-test_network = network(2,10)
-test_network.add_layer(layer_dense(2,5))
-test_network.add_layer(relu())
-test_network.add_layer(layer_dense(5,10))
-test_network.add_layer(layer_dense(5,10))
-test_network.add_layer(softmax())
-
-print(test_network)
