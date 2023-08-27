@@ -8,3 +8,4 @@ Work in progress to build a clean, robust reinforcement learning algorithm.
 * run: python -m venv venv
 * run: .\venv\Scripts\activate.bat
 * run: pip install -r requirements.txt
+* run: jupyter notebook

@@ -9,6 +9,7 @@ class network():
         self.layers = [] #list to contain all layers
         self.n_in = n_in
         self.n_out = n_out
+        self.mutateable_layers = []
         
     def add_layer(self,layer): #adds a layer
         self.layers.append(layer)
@@ -16,6 +17,9 @@ class network():
         if temp == False:
             print('Removing Added Layer')
             del self.layers[-1]
+        else:
+            if type(layer).__name__ == 'layer_dense':
+                self.mutateable_layers.append(len(self.layers)-1)
 
         # need to check layer matches last layer
         
