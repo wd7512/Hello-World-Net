@@ -49,6 +49,10 @@ class network():
                 self.output = layer.forward(self.output)
             return self.output
 
+    def reset(self):
+        for index in self.mutateable_layers:
+            self.layers[index].__init__(self.layers[index].n_in,self.layers[index].n_out)
+
     def __str__(self): #print of the layers
         display = ''
         for layer in self.layers:
@@ -60,14 +64,16 @@ class network():
 class layer_dense():
     def __init__(self,n_in,n_out):
         # initialise weights and biases to 0
-        
         self.biases = np.zeros(n_out)
         self.weights = np.zeros((n_in,n_out))
+        self.n_in = n_in
+        self.n_out = n_out
     
     def forward(self,X):
         # push values through the layer
         self.output = np.dot(X,self.weights) + self.biases
         return self.output
+
     
     def __str__(self): #prints info regarding the layer
         return self.__class__.__name__ + '\n' +'Weights: '+'\n'+str(self.weights)+'\n'+'Biases: '+'\n'+str(self.biases)
