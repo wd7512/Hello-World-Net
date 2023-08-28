@@ -1,6 +1,6 @@
 import numpy as np
 
-def random_learning(net,loss_fun,max_its=1000,max_mutations=1000,step=1/2**5,threshold):
+def random_learning(net,loss_fun,max_its=1000,max_mutations=1000,step=1/2**5,threshold=1e-3,info=False):
     '''
     returns loss over iterations,
     (iterations reached,total mutation attempts)
@@ -9,7 +9,12 @@ def random_learning(net,loss_fun,max_its=1000,max_mutations=1000,step=1/2**5,thr
     total_k = 0
 
     for i in range(max_its):
+        if info:
+            print('Iter',i,'Loss',losses[-1])
+        
         if losses[-1] < threshold:
+            if info:
+                print('Stopped Due to Threshold Reached')
             break
         
         for k in range(max_mutations): #mutate so many times before giving up
@@ -33,6 +38,8 @@ def random_learning(net,loss_fun,max_its=1000,max_mutations=1000,step=1/2**5,thr
             
         total_k += k
         if k == max_mutations-1:
+            if info:
+                print('Stopped Due to Max Mutations Reached')
             break
 
     return losses,(i,total_k)
