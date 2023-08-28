@@ -1,6 +1,6 @@
 import numpy as np
 
-def random_learning(net,loss_fun,max_its,max_mutations,step,threshold):
+def random_learning(net,loss_fun,max_its=1000,max_mutations=1000,step=1/2**5,threshold):
     '''
     returns loss over iterations,
     (iterations reached,total mutation attempts)
