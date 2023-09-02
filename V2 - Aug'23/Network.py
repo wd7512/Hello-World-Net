@@ -1,15 +1,15 @@
 import numpy as np
+import pickle
 
 class network():
     '''
-    Inputs must always be a 2d array of a batch of input vectors
-    You can always use a singular input vector but must be contained in another array so it is 2d
+    class to hold a neural network
     '''
     def __init__(self,n_in,n_out):
         self.layers = [] #list to contain all layers
         self.n_in = n_in
         self.n_out = n_out
-        self.mutateable_layers = []
+        self.mutateable_layers = [] #list to index mutateable layers
         
     def add_layer(self,layer): #adds a layer
         self.layers.append(layer)
@@ -41,6 +41,10 @@ class network():
             return True
             
     def forward(self,X):
+        '''
+        Inputs must always be a 2d array of a batch of input vectors
+        You can always use a singular input vector but must be contained in another array so it is 2d
+        '''
         if np.shape(X)[1] != self.n_in:
             raise Exception('Wrong input size')
         else:
@@ -49,9 +53,17 @@ class network():
                 self.output = layer.forward(self.output)
             return self.output
 
-    def reset(self):
+    def reset(self): #set all layers to 0
         for index in self.mutateable_layers:
             self.layers[index].__init__(self.layers[index].n_in,self.layers[index].n_out)
+
+    def save_to_file(self, filename): 
+        '''
+        saves neural network
+        remember to add .pkl to the filename
+        '''
+        with open(filename, 'wb') as file:
+            pickle.dump(self, file)
 
     def __str__(self): #print of the layers
         display = ''
@@ -61,7 +73,7 @@ class network():
 
         return display + '\n---------- \n'
 
-class layer_dense():
+class layer_dense(): #a dense neural layer 
     def __init__(self,n_in,n_out):
         # initialise weights and biases to 0
         self.biases = np.zeros(n_out)
@@ -94,10 +106,25 @@ class activation_function():
 
 class relu(activation_function):
     def __init__(self):
-        self.function = lambda x : np.maximum(0,x)
+        pass
+    def function(self,x):
+        return np.maximum(0,x)
         
 class softmax(activation_function):
     def __init__(self):
-        self.function = lambda x : np.exp(x) / np.sum(np.exp(x))
+        pass
+    def function(self,x):
+        return np.exp(x) / np.sum(np.exp(x))
 
-# remove everything below this later
+class sigmoid(activation_function):
+    def __init__(self):
+        pass
+    def function(self,x):
+        return 1 / (1+np.exp(-x))
+
+
+def load_network_from_file(filename):
+    with open(filename, 'rb') as file:
+        loaded_network = pickle.load(file)
+    return loaded_network
+

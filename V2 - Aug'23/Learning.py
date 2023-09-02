@@ -81,3 +81,6 @@ def make_mutate(net,pertubations):
         net.layers[index].biases += b_pertubation
 
         i += 1
+
+def random_evolution_learning(net,loss_fun,max_its=1000,max_mutations=1000,step=1/2**5,threshold=1e-3,info=False):
+    return 0
