@@ -18,7 +18,7 @@ class network():
             print('Removing Added Layer')
             del self.layers[-1]
         else:
-            if type(layer).__name__ == 'layer_dense':
+            if type(layer).__name__ == 'layer_dense' or type(layer).__name__ == 'layer_one_to_one':
                 self.mutateable_layers.append(len(self.layers)-1)
 
         # need to check layer matches last layer
@@ -89,6 +89,33 @@ class layer_dense(): #a dense neural layer
     
     def __str__(self): #prints info regarding the layer
         return self.__class__.__name__ + '\n' +'Weights: '+'\n'+str(self.weights)+'\n'+'Biases: '+'\n'+str(self.biases)
+    
+class layer_one_to_one(): # a one to one layer
+    def __init__(self,n_in_out):
+        # initialise weights and biases to 0
+        self.n_in = n_in_out
+        self.n_out = n_in_out
+        self.biases = np.zeros(n_in_out)
+        self.weights = np.zeros(n_in_out)
+
+    def forward(self,X):
+        # push values through the layer
+        self.output = np.multiply(X,self.weights) + self.biases
+        return self.output
+    
+class layer_dropout(): # a dropout layer
+    def __init__(self,n_in_out,prob):
+        self.n_in = n_in_out
+        self.n_out = n_in_out
+        self.weights = np.random.choice([0, 1], size=n_in_out, p=[1 - prob, prob])
+        self.prob = prob
+    
+    def forward(self,X):
+        # push values through the layer
+        self.weights = np.random.choice([0, 1], size=self.n_in_out, p=[1 - self.prob, self.prob]) #create random dropout layer each time
+        self.output = np.multiply(X,self.weights)
+        return self.output
+
 
 class activation_function():
     def __init__(self,function):

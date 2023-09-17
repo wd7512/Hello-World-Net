@@ -15,9 +15,11 @@ Work in progress to build a clean, robust reinforcement learning algorithm.
 1. Get folders into the PyPi framework
     * Remove V1
 2. Network Improvements
-    * add 1 to 1 layer
+    * add 1 to 1 layer, need to test,
+    * add dropout layer, need to test,
     * add parrallel processing.
     * add ensembling methods?
+    * add naming convention
 3. Learning Improvements
     * add gradient descent
     * add evolutionary algorithm
