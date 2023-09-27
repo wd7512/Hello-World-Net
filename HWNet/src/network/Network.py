@@ -85,6 +85,7 @@ class layer_dense(): #a dense neural layer
         # push values through the layer
         self.output = np.dot(X,self.weights) + self.biases
         return self.output
+
     
     def __str__(self): #prints info regarding the layer
         return self.__class__.__name__ + '\n' +'Weights: '+'\n'+str(self.weights)+'\n'+'Biases: '+'\n'+str(self.biases)
@@ -95,15 +96,12 @@ class layer_one_to_one(): # a one to one layer
         self.n_in = n_in_out
         self.n_out = n_in_out
         self.biases = np.zeros(n_in_out)
-        self.weights = np.zeros((n_in_out))
+        self.weights = np.zeros(n_in_out)
 
     def forward(self,X):
         # push values through the layer
         self.output = np.multiply(X,self.weights) + self.biases
         return self.output
-    
-    def __str__(self): #prints info regarding the layer
-        return self.__class__.__name__ + '\n' +'Weights: '+'\n'+str(self.weights)+'\n'+'Biases: '+'\n'+str(self.biases)
     
 class layer_dropout(): # a dropout layer
     def __init__(self,n_in_out,prob):
@@ -117,9 +115,6 @@ class layer_dropout(): # a dropout layer
         self.weights = np.random.choice([0, 1], size=self.n_in_out, p=[1 - self.prob, self.prob]) #create random dropout layer each time
         self.output = np.multiply(X,self.weights)
         return self.output
-    
-    def __str__(self): #prints info regarding the layer
-        return self.__class__.__name__ + '\n' +'Rate: '+'\n'+str(self.prob)
 
 
 class activation_function():
